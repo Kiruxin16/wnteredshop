@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="application">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="index.js"></script>
+</head>
+<body>
+    <div class="container" ng-controller="indexController">
+        <h1>Маркет</h1>
+        
+
+        {{productList}}
+        <h3>Учет товаров</h3>
+        <table class="table table-hover">
+            <tr>
+                <td>ID</td>
+                <td>Название</td>
+                <td>Цена</td>
+            </tr>
+            <tr ng-repeat="p in productList">
+                <td>{{p.id}}</td>
+                <td>{{p.title}}</td>
+                <td>{{p.price}}</td>
+                <td>
+                    <button type="button" class="btn-primary" ng-click ="showProductInfo(p.id)">Info</button>
+                    <button type="button" class="btn-danger" ng-click ="deleteProductById(p.id)">X</button>
+                </td>
+            </tr>
+        </table>
+
+
+    </div>
+
+
+</body>
+</html>
