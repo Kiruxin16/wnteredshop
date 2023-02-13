@@ -31,6 +31,12 @@ angular.module('application',[]).controller('indexController',function ($scope,$
             });
         }
 
+    $scope.clearCart = function(){
+        $http.delete('http://localhost:8189/winter/api/v1/cart').then(function (response){
+            $scope.loadProductsInCart();
+            });
+        }
+
     $scope.loadProducts();
     $scope.loadProductsInCart();
 

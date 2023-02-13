@@ -32,4 +32,13 @@ public class CartServise {
         tempCart.add(product);
 
     }
+    public void clearCart(){
+        tempCart.clearCartItems();
+    }
+
+    public void changeQuantity(Long id, int delta){
+        tempCart.changeQuantity(id,delta);
+    }
+
+
 }
