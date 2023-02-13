@@ -19,7 +19,20 @@ angular.module('application',[]).controller('indexController',function ($scope,$
         });
     }
 
+    $scope.loadProductsInCart = function(){
+        $http.get('http://localhost:8189/winter/api/v1/cart').then(function (response){
+            $scope.cartProductList = response.data;
+        });
+    }
+
+    $scope.addProductToCart = function(productId){
+        $http.post('http://localhost:8189/winter/api/v1/cart/'+productId).then(function (response){
+            $scope.loadProductsInCart();
+            });
+        }
+
     $scope.loadProducts();
+    $scope.loadProductsInCart();
 
 //    $scope.loadProducts =function(){
 //        $http.get(contextPath +'/products')
