@@ -34,11 +34,17 @@
         <table class="table table-hover">
             <tr>
                 <td>Название</td>
+                <td>Количество</td>
                 <td>Цена</td>
             </tr>
-            <tr ng-repeat="p in cartProductList">
-                <td>{{p.title}}</td>
-                <td>{{p.price}}</td>
+            <tr ng-repeat="item in cart.items">
+                <td>{{item.productTitle}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.pricePerProduct+' x '+item.quantity+' = '+ item.price}}</td>
+            </tr>
+            <tr>
+                <td>Итого</td>
+                <td>{{cart.totalPrice}}</td>
             </tr>
         </table>
 

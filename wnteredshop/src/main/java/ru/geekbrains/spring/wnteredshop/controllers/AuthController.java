@@ -35,9 +35,6 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @GetMapping("/secured")
-    public String helloSecurity(){
-        return "Hello";
-    }
+
 
 }
