@@ -24,7 +24,7 @@ public class Cart {
         return Collections.unmodifiableList(items);
     }
 
-    public void add(Product product){ // TODO: Доработать в ДЗ
+    public void add(Product product){ //
         items.add(new CartItem(product.getId(), product.getTitle(),1,product.getPrice(),product.getPrice()));
         recalculate();
     }
