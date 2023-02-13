@@ -23,8 +23,6 @@
                 <td>{{p.title}}</td>
                 <td>{{p.price}}</td>
                 <td>
-                    <button type="button" class="btn-primary" ng-click ="showProductInfo(p.id)">Info</button>
-                    <button type="button" class="btn-danger" ng-click ="deleteProductById(p.id)">X</button>
                     <button type="button" class="btn-success" ng-click ="addProductToCart(p.id)">ToCart</button>
                 </td>
             </tr>
@@ -43,8 +41,15 @@
             </tr>
             <tr ng-repeat="item in cart.items">
                 <td>{{item.productTitle}}</td>
-                <td>{{item.quantity}}</td>
-                <td>{{item.pricePerProduct+' x '+item.quantity+' = '+ item.price}}</td>
+                <td>
+                    <button type="button" class="btn-outline-success" ng-click ="changeQuantity(item.productId,-1)">-</button>
+                    {{item.quantity}}
+                    <button type="button" class="btn-outline-success" ng-click ="changeQuantity(item.productId,1)">+</button>
+                </td>
+                <td>
+                    {{item.pricePerProduct+' x '+item.quantity+' = '+ item.price}}
+                    <button type="button" class="btn-outline-danger" ng-click ="deleteItem(item.productId)">X</button>
+                </td>
             </tr>
             <tr>
                 <td>Итого</td>

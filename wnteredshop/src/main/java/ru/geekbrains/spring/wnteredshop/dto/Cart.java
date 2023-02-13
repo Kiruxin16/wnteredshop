@@ -42,6 +42,11 @@ public class Cart {
         recalculate();
     }
 
+    public void deleteItem(Long id){
+        items.remove(getById(id));
+        recalculate();
+    }
+
     public void changeQuantity(Long id,int delta){
         CartItem item = getById(id);
         item.setQuantity(item.getQuantity()+delta);

@@ -36,6 +36,10 @@ public class CartServise {
         tempCart.clearCartItems();
     }
 
+    public void deleteItem(Long id){
+        tempCart.deleteItem(id);
+    }
+
     public void changeQuantity(Long id, int delta){
         tempCart.changeQuantity(id,delta);
     }
