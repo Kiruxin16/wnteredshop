@@ -24,4 +24,20 @@ public class CartController {
     public Cart getCurrentCart(){
         return cartServise.getCurrentCart();
     }
+
+    @DeleteMapping
+    public void clearCart(){
+        cartServise.clearCart();
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteItem(@PathVariable Long id){
+        cartServise.deleteItem(id);
+    }
+
+    @PostMapping("change")
+    public void changeQuantity(@RequestParam("id") Long id,@RequestParam("delta") int delta ){
+        cartServise.changeQuantity(id,delta);
+    }
+
 }
