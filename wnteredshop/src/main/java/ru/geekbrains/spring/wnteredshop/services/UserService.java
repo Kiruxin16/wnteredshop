@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.spring.wnteredshop.entities.Role;
 import ru.geekbrains.spring.wnteredshop.entities.User;
-import ru.geekbrains.spring.wnteredshop.repositories.UserRepository;
+import ru.geekbrains.spring.wnteredshop.services.repositories.UserRepository;
 
 import java.util.Collection;
 import java.util.Optional;

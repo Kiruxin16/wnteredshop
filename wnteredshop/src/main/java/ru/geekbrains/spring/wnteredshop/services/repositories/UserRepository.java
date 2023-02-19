@@ -1,4 +1,4 @@
-package ru.geekbrains.spring.wnteredshop.repositories;
+package ru.geekbrains.spring.wnteredshop.services.repositories;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
