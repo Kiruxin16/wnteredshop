@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
-
 public class Cart {
     private List<CartItem> items;
     private int totalPrice;
