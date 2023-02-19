@@ -9,8 +9,6 @@
 package ru.geekbrains.spring.wnteredshop.soap;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -23,7 +21,7 @@ import java.util.List;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="prod" type="{http://ru.geekbrais.winteredshop/spring/ws/products}prod" maxOccurs="unbounded"/&gt;
+ *         &lt;element name="prod" type="{http://ru.geekbrais.winteredshop/spring/ws/products}prod"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,39 +34,34 @@ import java.util.List;
 @XmlType(name = "", propOrder = {
     "prod"
 })
-@XmlRootElement(name = "getAllProductsResponse")
-public class GetAllProductsResponse {
+@XmlRootElement(name = "getProdByIdResponse")
+public class GetProdByIdResponse {
 
     @XmlElement(required = true)
-    protected List<Prod> prod;
+    protected Prod prod;
 
     /**
      * Gets the value of the prod property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the prod property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getProd().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Prod }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link Prod }
+     *     
      */
-    public List<Prod> getProd() {
-        if (prod == null) {
-            prod = new ArrayList<Prod>();
-        }
-        return this.prod;
+    public Prod getProd() {
+        return prod;
+    }
+
+    /**
+     * Sets the value of the prod property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Prod }
+     *     
+     */
+    public void setProd(Prod value) {
+        this.prod = value;
     }
 
 }

@@ -5,6 +5,24 @@
         targetNamespace="http://ru.geekbrais.winteredshop/spring/ws/products" elementFormDefault="qualified">
 
 
+    <xs:element name="getProdByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+
+    <xs:element name="getProdByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="prod" type="tns:prod"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 
     <xs:element name="getAllProductsRequest">
         <xs:complexType/>

@@ -2,7 +2,6 @@ package ru.geekbrains.spring.wnteredshop.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.spring.wnteredshop.annotations.Time;
 import ru.geekbrains.spring.wnteredshop.entities.Product;
 import ru.geekbrains.spring.wnteredshop.services.repositories.ProductRepository;
 import ru.geekbrains.spring.wnteredshop.soap.Prod;
@@ -36,6 +35,9 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
+    public Prod getProdById(Long id){
+       return productRepository.findById(id).map(functionProducttoProd).get();
+    }
 
     public List<Prod> getAllProds(){
         return productRepository.findAll().stream().map(functionProducttoProd).collect(Collectors.toList());
