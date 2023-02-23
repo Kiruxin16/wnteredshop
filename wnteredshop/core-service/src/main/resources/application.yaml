@@ -22,3 +22,6 @@ spring:
 jwt:
   secret: dfd#$^svsdfee3dgd$%3432$373
   lifetime: 360000
+
+integration:
+  url: http://localhost:8190/winter-carts/api/v1/cart

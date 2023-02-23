@@ -1,6 +1,7 @@
 package ru.geekbrains.wnteredshop.core.integratoins;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -13,13 +14,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartServiceIntegration {
 
+    @Value("${integration.url}")
+    private String url;
+
+
+
     private final RestTemplate restTemplate;
 
     public Optional<CartDto> getCurrentCart(){
-        return Optional.ofNullable(restTemplate.getForObject("http://localhost:8190/winter-carts/api/v1/cart",CartDto.class));
+        return Optional.ofNullable(restTemplate.getForObject(url,CartDto.class));
     }
 
     public void clear(){
-        restTemplate.delete("http://localhost:8190/winter-carts/api/v1/cart");
+        restTemplate.delete(url);
     }
 }
