@@ -14,31 +14,31 @@ angular.module('application',[]).controller('indexController',function ($scope,$
     }
 
     $scope.deleteProductById = function(productId){
-        $http.delete('http://localhost:8189/winter/api/v1/products/'+productId).then(function (response){
+        $http.delete('http://localhost:8189/winter-carts/api/v1/products/'+productId).then(function (response){
         $scope.loadProducts();
         });
     }
 
     $scope.loadProductsInCart = function(){
-        $http.get('http://localhost:8189/winter/api/v1/cart').then(function (response){
+        $http.get('http://localhost:8190/winter-carts/api/v1/cart').then(function (response){
             $scope.cart = response.data;
         });
     }
 
     $scope.addProductToCart = function(productId){
-        $http.post('http://localhost:8189/winter/api/v1/cart/add/'+productId).then(function (response){
+        $http.post('http://localhost:8190/winter-carts/api/v1/cart/add/'+productId).then(function (response){
             $scope.loadProductsInCart();
             });
         }
 
     $scope.clearCart = function(){
-        $http.delete('http://localhost:8189/winter/api/v1/cart').then(function (response){
+        $http.delete('http://localhost:8190/winter-carts/api/v1/cart').then(function (response){
             $scope.loadProductsInCart();
             });
         }
 
     $scope.deleteItem = function(id){
-        $http.delete('http://localhost:8189/winter/api/v1/cart/'+id).then(function (response){
+        $http.delete('http://localhost:8190/winter-carts/api/v1/cart/'+id).then(function (response){
             $scope.loadProductsInCart();
         });
     }
@@ -46,7 +46,7 @@ angular.module('application',[]).controller('indexController',function ($scope,$
     $scope.changeQuantity = function(id,delta){
 
         $http({
-            url:'http://localhost:8189/winter/api/v1/cart/change',
+            url:'http://localhost:8190/winter-carts/api/v1/cart/change',
             method: 'POST',
             params:{
                 id:id,

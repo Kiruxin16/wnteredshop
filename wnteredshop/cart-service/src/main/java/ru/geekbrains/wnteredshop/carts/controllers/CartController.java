@@ -10,6 +10,7 @@ import ru.geekbrains.wnteredshop.carts.services.CartServise;
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class CartController {
     private final CartServise cartServise;
     private final CartConverter cartConverter;

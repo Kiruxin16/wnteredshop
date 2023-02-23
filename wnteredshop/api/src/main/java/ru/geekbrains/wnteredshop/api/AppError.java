@@ -5,6 +5,12 @@ package ru.geekbrains.wnteredshop.api;
 
 public class AppError {
     private  int statusCode;
+
+    public AppError(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
+
     private String message;
 
     public int getStatusCode() {
