@@ -5,25 +5,32 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
-@Table(name="products")
-public class Product {
+@Table(name="orders")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
 
-    @Column(name ="title")
-    private String title;
-
-    @Column(name ="price")
-    private int price;
-
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name="user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> items;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name ="phone")
+    private String phone;
+
+    @Column(name = "total_price")
+    private int totalPrice;
 
     @CreationTimestamp
     @Column(name ="created_at")

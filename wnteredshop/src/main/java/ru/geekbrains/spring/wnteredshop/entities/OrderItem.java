@@ -1,6 +1,8 @@
 package ru.geekbrains.spring.wnteredshop.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -8,22 +10,33 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name="products")
-public class Product {
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="order_items")
+
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
 
-    @Column(name ="title")
-    private String title;
-
-    @Column(name ="price")
-    private int price;
+    @ManyToOne
+    @JoinColumn(name="product_id")
+    private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @Column(name ="quantity")
+    private int quantity;
+
+    @Column(name ="price_per_product")
+    private int pricePerProduct;
+
+    @Column(name = "price")
+    private int price;
+
 
     @CreationTimestamp
     @Column(name ="created_at")

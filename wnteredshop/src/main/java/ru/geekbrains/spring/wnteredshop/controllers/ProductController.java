@@ -4,11 +4,15 @@ package ru.geekbrains.spring.wnteredshop.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.spring.wnteredshop.converters.ProductConverter;
 import ru.geekbrains.spring.wnteredshop.dto.ProductDto;
+import ru.geekbrains.spring.wnteredshop.entities.Category;
 import ru.geekbrains.spring.wnteredshop.entities.Product;
 import ru.geekbrains.spring.wnteredshop.exceptions.AppError;
 import ru.geekbrains.spring.wnteredshop.exceptions.ResourceNotFoundException;
+import ru.geekbrains.spring.wnteredshop.services.CategoryService;
 import ru.geekbrains.spring.wnteredshop.services.ProductService;
 
 import java.util.List;
@@ -21,11 +25,12 @@ import java.util.stream.Collectors;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductConverter productConverter;
 
     @GetMapping
     public List<ProductDto> findAllProducts(){
         return productService.findAllProducts().stream()
-                .map(p ->new ProductDto(p.getId(), p.getTitle(), p.getPrice())).collect(Collectors.toList());
+                .map(productConverter::entityToDto).collect(Collectors.toList());
     }
 
 /*    @GetMapping("/{id}")
@@ -40,9 +45,14 @@ public class ProductController {
     @GetMapping("/{id}")
     public  ProductDto findProductByID(@PathVariable Long id){
         Product product = productService.findProductByID(id).orElseThrow(() -> new ResourceNotFoundException("Продукт не найден, id"+id));
-        return new ProductDto(product.getId(), product.getTitle(), product.getPrice());
+        return productConverter.entityToDto(product);
     }
 
+    @PostMapping("/{id}")
+    public ProductDto createProduct(@RequestBody ProductDto productDto){
+        Product product = productService.createNewProduct(productDto);
+        return  productDto;
+    }
 
 
     @DeleteMapping("/{id}")
