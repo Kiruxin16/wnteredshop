@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderService {
     private final ProductService  productService;
-    private final CartServiceIntegration cartServise;
+    private final CartServiceIntegration cartService;
     private final OrderRepository orderRepository;
 
 
     @Transactional
     public void createOrder(User user) {
-        CartDto cart = cartServise.getCurrentCart().get();
+        CartDto cart = cartService.getCurrentCart().get();
         Order order = new Order();
         order.setUser(user);
         order.setTotalPrice(cart.getTotalPrice());
@@ -36,7 +36,7 @@ public class OrderService {
                 ).collect(Collectors.toList())
         );
         orderRepository.save(order);
-        cartServise.clear();
+        cartService.clear();
 
     }
 }
