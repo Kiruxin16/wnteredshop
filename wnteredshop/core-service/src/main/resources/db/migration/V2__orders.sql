@@ -1,6 +1,6 @@
 CREATE TABLE orders(
                 id bigserial PRIMARY KEY,
-                user_id bigint  REFERENCES users(id),
+                username VARCHAR(255)  ,
                 address VARCHAR(255),
                 phone VARCHAR(255),
                 total_price int,

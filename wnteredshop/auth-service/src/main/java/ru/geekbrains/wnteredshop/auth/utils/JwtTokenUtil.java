@@ -1,4 +1,4 @@
-package ru.geekbrains.wnteredshop.core.utils;
+package ru.geekbrains.wnteredshop.auth.utils;
 
 
 import io.jsonwebtoken.Claims;
@@ -43,7 +43,7 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-
+/*
     private Claims getAllClaimsFromToken(String token){
         return Jwts.parser()
                 .setSigningKey(secret)
@@ -63,5 +63,5 @@ public class JwtTokenUtil {
     private <T> T getClaimsFromToken(String token, Function<Claims, T> claimResolver){
         Claims claims = getAllClaimsFromToken(token);
         return claimResolver.apply(claims);
-    }
+    }*/
 }

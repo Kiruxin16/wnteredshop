@@ -4,5 +4,9 @@ server:
     context-path: /winter-carts
 
 integration:
-  getDto: http://localhost:8189/winter/api/v1/products/
+  product-service:
+    url: http://localhost:8189/winter/api/v1/products
+    read-timeout: 10000
+    write-timeout: 5000
+    connect-timeout: 5000
 

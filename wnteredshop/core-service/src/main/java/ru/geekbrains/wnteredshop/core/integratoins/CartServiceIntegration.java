@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import ru.geekbrains.wnteredshop.api.CartDto;
 import ru.geekbrains.wnteredshop.api.ProductDto;
 
@@ -14,18 +15,24 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartServiceIntegration {
 
-    @Value("${integration.url}")
-    private String url;
+    private final WebClient cartServiceWebClient;
 
 
 
-    private final RestTemplate restTemplate;
 
-    public Optional<CartDto> getCurrentCart(){
-        return Optional.ofNullable(restTemplate.getForObject(url,CartDto.class));
+    public CartDto getCurrentCart(){
+        return cartServiceWebClient.get()
+                .uri("/api/v1/cart")
+                .retrieve()
+                .bodyToMono(CartDto.class)
+                .block();
     }
 
     public void clear(){
-        restTemplate.delete(url);
+        cartServiceWebClient.delete()
+                .uri("/api/v1/cart")
+                .retrieve()
+                .toBodilessEntity()
+                .block();
     }
 }

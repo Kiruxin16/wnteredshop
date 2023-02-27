@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.wnteredshop.api.CartDto;
 import ru.geekbrains.wnteredshop.core.entities.Order;
 import ru.geekbrains.wnteredshop.core.entities.OrderItem;
-import ru.geekbrains.wnteredshop.core.entities.User;
 import ru.geekbrains.wnteredshop.core.integratoins.CartServiceIntegration;
 import ru.geekbrains.wnteredshop.core.repositories.OrderRepository;
 
@@ -21,10 +20,10 @@ public class OrderService {
 
 
     @Transactional
-    public void createOrder(User user) {
-        CartDto cart = cartService.getCurrentCart().get();
+    public void createOrder(String username) {
+        CartDto cart = cartService.getCurrentCart();
         Order order = new Order();
-        order.setUser(user);
+        order.setUsername(username);
         order.setTotalPrice(cart.getTotalPrice());
         order.setItems(cart.getItems().stream().map(
                 cartItemDto -> new OrderItem(
