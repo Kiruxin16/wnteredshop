@@ -1,9 +1,10 @@
-package ru.geekbrains.wnteredshop.core.repositories;
+package ru.geekbrains.wnteredshop.auth.repositories;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.geekbrains.wnteredshop.core.entities.User;
+import ru.geekbrains.wnteredshop.auth.entities.User;
+
 
 import java.util.Optional;
 

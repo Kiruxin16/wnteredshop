@@ -1,4 +1,4 @@
-package ru.geekbrains.wnteredshop.core.entities;
+package ru.geekbrains.wnteredshop.auth.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
