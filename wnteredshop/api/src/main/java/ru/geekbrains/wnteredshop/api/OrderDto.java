@@ -1,6 +1,7 @@
 package ru.geekbrains.wnteredshop.api;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class OrderDto {
@@ -49,11 +50,11 @@ public class OrderDto {
         this.phone = phone;
     }
 
-    public int getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -63,7 +64,7 @@ public class OrderDto {
 
     private String phone;
 
-    private int totalPrice;
+    private BigDecimal totalPrice;
 
 
 }

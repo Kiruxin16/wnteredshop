@@ -1,8 +1,10 @@
 package ru.geekbrains.wnteredshop.api;
 
 
+import java.math.BigDecimal;
+
 public class ProductDto {
-    public ProductDto(Long id, String title, int price, String categoryTitle) {
+    public ProductDto(Long id, String title, BigDecimal price, String categoryTitle) {
         this.id = id;
         this.title = title;
         this.price = price;
@@ -11,7 +13,7 @@ public class ProductDto {
 
     private Long id;
     private String title;
-    private int price;
+    private BigDecimal price;
     private String categoryTitle;
 
     public Long getId() {
@@ -30,11 +32,11 @@ public class ProductDto {
         this.title = title;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

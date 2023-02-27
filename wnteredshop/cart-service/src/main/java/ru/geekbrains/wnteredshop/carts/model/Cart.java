@@ -5,6 +5,7 @@ import ru.geekbrains.wnteredshop.api.ProductDto;
 import ru.geekbrains.wnteredshop.api.ResourceNotFoundException;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 public class Cart {
     private List<CartItem> items;
-    private int totalPrice;
+    private BigDecimal totalPrice;
 
     public Cart(){
         this.items =new ArrayList<>();
@@ -54,10 +55,10 @@ public class Cart {
     }
 
     private void recalculate(){
-        totalPrice =0;
+        totalPrice =new BigDecimal(0);
         for(CartItem item: items){
-            item.setPrice(item.getPricePerProduct()*item.getQuantity());
-            totalPrice+=item.getPricePerProduct()* item.getQuantity();
+            item.getPrice().add(item.getPricePerProduct().multiply(new BigDecimal(item.getQuantity())));
+            totalPrice.add(item.getPrice());
         }
     }
 
