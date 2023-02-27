@@ -3,5 +3,6 @@ server:
   servlet:
     context-path: /winter-carts
 
-
+integration:
+  getDto: http://localhost:8189/winter/api/v1/products/
 
