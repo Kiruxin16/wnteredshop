@@ -2,6 +2,7 @@ package ru.geekbrains.wnteredshop.core.controllers;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.wnteredshop.api.ProductDto;
 import ru.geekbrains.wnteredshop.api.ResourceNotFoundException;
@@ -10,6 +11,7 @@ import ru.geekbrains.wnteredshop.core.entities.Product;
 
 import ru.geekbrains.wnteredshop.core.services.ProductService;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,9 +25,16 @@ public class ProductController {
     private final ProductConverter productConverter;
 
     @GetMapping
-    public List<ProductDto> findAllProducts(){
-        return productService.findAllProducts().stream()
-                .map(productConverter::entityToDto).collect(Collectors.toList());
+    public Page<ProductDto> findAllProducts(@RequestParam(name = "p",defaultValue = "1")Integer page,
+                                            @RequestParam(name = "min_cost",required = false)BigDecimal minCost,
+                                            @RequestParam(name = "max_cost",required = false)BigDecimal maxCost,
+                                            @RequestParam(name = "title_part",required = false)String partTitle
+    ){
+        if(page<1){
+            page=1;
+        }
+
+        return productService.find(page,minCost,maxCost,partTitle);
     }
 
 /*    @GetMapping("/{id}")
