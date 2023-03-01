@@ -22,7 +22,7 @@ public class OrderService {
 
 
     @Transactional
-    public void createOrder(String username) {
+    public Order createOrder(String username) {
         CartDto cart = cartService.getCurrentCart();
         Order order = new Order();
         order.setUsername(username);
@@ -38,6 +38,7 @@ public class OrderService {
         );
         orderRepository.save(order);
         cartService.clear();
+        return order;
 
     }
 }
