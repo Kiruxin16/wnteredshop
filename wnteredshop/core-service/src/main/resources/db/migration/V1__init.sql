@@ -12,7 +12,7 @@ CREATE TABLE products (
            id bigserial PRIMARY KEY,
            title VARCHAR(255),
            category_id bigint REFERENCES categories(id),
-           price INT,
+           price DECIMAL,
            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
