@@ -21,4 +21,4 @@ INSERT INTO products (title,price,category_id) VALUES
 ('Milk',80,1),
 ('Bread',25,1),
 ('Cheese',300,1),
-('Ice cream')
+('Ice cream',94,1);

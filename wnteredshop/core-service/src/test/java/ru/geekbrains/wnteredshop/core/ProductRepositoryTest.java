@@ -10,6 +10,7 @@ import ru.geekbrains.wnteredshop.core.entities.Product;
 import ru.geekbrains.wnteredshop.core.repositories.ProductRepository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -28,7 +29,8 @@ public class ProductRepositoryTest {
         entityManager.persist(product);
         entityManager.flush();
 
-        Assertions.assertEquals(120,product.getPrice().intValue());
+        List<Product> productList = productRepository.getCostDiap(BigDecimal.valueOf(100),BigDecimal.valueOf(200));
+        Assertions.assertEquals(1,productList.size());
     }
 
 }
