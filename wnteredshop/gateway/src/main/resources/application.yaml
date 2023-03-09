@@ -13,6 +13,7 @@ spring:
             allowedMethods:
               - GET
               - POST
+              - DELETE
             allowedHeaders: "*"
       routes:
         - id: core-service
@@ -39,6 +40,7 @@ spring:
             - StripPrefix=1
             - PrefixPath=/winter-auth
             - JwtAuthFilter
+
 
 jwt:
   secret: h4f8093h4f983yhrt9834hr0934hf0hf493g493gf438rh438th34g34g

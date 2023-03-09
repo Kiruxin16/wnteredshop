@@ -11,6 +11,10 @@ public class ProductDto {
         this.categoryTitle = categoryTitle;
     }
 
+    public ProductDto(){
+
+    }
+
     private Long id;
     private String title;
     private BigDecimal price;
