@@ -20,7 +20,7 @@ public class CartController {
     }
 
     @GetMapping
-    public CartDto getCurrentCart(){
+    public CartDto getCurrentCart(@RequestHeader(name = "username",required = false)String username){
         return cartConverter.entityToDto(cartServise.getCurrentCart());
     }
 
