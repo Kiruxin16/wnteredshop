@@ -30,7 +30,7 @@ public class OrderServiceTest {
     private OrderService orderService;
 
     @MockBean
-    private ProductService productService
+    private ProductService productService;
 
     @MockBean
     private CartServiceIntegration cartServiceIntegration;

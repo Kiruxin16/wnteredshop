@@ -1,109 +1,86 @@
-angular.module('application',[]).controller('indexController',function ($scope,$http) {
-   // const contextPath ='http://localhost:8189/application';
+(function () {
+    angular
+        .module('market', ['ngRoute', 'ngStorage'])
+        .config(config)
+        .run(run);
 
-    $scope.loadProducts = function(){
-        $http.get('http://localhost:5555/core/api/v1/products').then(function (response){
-            $scope.productList = response.data;
-        });
-    }
-
-    $scope.showProductInfo = function(productId){
-        $http.get('http://localhost:5555/core/api/v1/products/'+productId).then(function (response){
-            alert(response.data.title);
-        });
-    }
-
-    $scope.deleteProductById = function(productId){
-        $http.delete('http://localhost:5555/core/api/v1/products/'+productId).then(function (response){
-        $scope.loadProducts();
-        });
-    }
-
-    $scope.loadProductsInCart = function(){
-        $http.get('http://localhost:5555/cart/api/v1/cart').then(function (response){
-            $scope.cart = response.data;
-        });
-    }
-
-    $scope.addProductToCart = function(productId){
-        $http.post('http://localhost:5555/cart/api/v1/cart/add/'+productId).then(function (response){
-            $scope.loadProductsInCart();
+    function config($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'welcome/welcome.html',
+                controller: 'welcomeController'
+            })
+            .when('/store', {
+                templateUrl: 'store/store.html',
+                controller: 'storeController'
+            })
+            .when('/cart', {
+                templateUrl: 'cart/cart.html',
+                controller: 'cartController'
+            })
+            .otherwise({
+                redirectTo: '/'
             });
-        }
-
-    $scope.clearCart = function(){
-        $http.delete('http://localhost:5555/cart/api/v1/cart').then(function (response){
-            $scope.loadProductsInCart();
-            });
-        }
-
-    $scope.deleteItem = function(id){
-        $http.delete('http://localhost:5555/cart/api/v1/cart/'+id).then(function (response){
-            $scope.loadProductsInCart();
-        });
     }
 
-    $scope.changeQuantity = function(id,delta){
-
-        $http({
-            url:'http://localhost:5555/cart/api/v1/cart/change',
-            method: 'POST',
-            params:{
-                id:id,
-                delta:delta
+    function run($rootScope, $http, $localStorage) {
+        if ($localStorage.wnteredShopUser) {
+            try {
+                let jwt = $localStorage.wnteredShopUser.token;
+                let payload = JSON.parse(atob(jwt.split('.')[1]));
+                let currentTime = parseInt(new Date().getTime() / 1000);
+                if (currentTime > payload.exp) {
+                    console.log("Token is expired!!!");
+                    delete $localStorage.wnteredShopUser;
+                    $http.defaults.headers.common.Authorization = '';
+                }
+            } catch (e) {
             }
-        })
-            .then(function (response){
-                 $scope.loadProductsInCart();
-            });
+
+            if ($localStorage.wnteredShopUser) {
+                $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.wnteredShopUser.token;
+            }
+        }
+
     }
+})();
 
-    $scope.loadProducts();
-    $scope.loadProductsInCart();
 
-//    $scope.loadProducts =function(){
-//        $http.get(contextPath +'/products')
-//            .then(function (response){
-//                $scope.getProductList=response.data;
-//            });
-//    };
-//
-//    $scope.filterByCost = function(){
-//        console.log($scope.filters);
-//        $http({
-//            url:contextPath +'/products/filter/diapasone',
-//            method: 'GET',
-//            params:{
-//                minCost: $scope.filters.min,
-//                maxCost: $scope.filters.max
-//            }
-//        })
-//            .then(function(response){
-//                $scope.getProductList=response.data;
-//        });
-//    };
-//
-//    $scope.removeProduct = function(id){
-//        $http.get(contextPath+'/products/delete/'+id)
-//            .then(function(response){
-//                $scope.loadProducts();
-//            });
-//    };
-//
-//    $scope.addProduct = function(){
-//          $http({
-//              url:contextPath+'/products/add',
-//              method: 'POST',
-//              params:{
-//                 title:document.getElementById('title').value,
-//                 price:document.getElementById('price').value
-//              }
-//          })
-//              .then(function(response){
-//                  $scope.loadProducts();
-//              });
-//      };
-//
-//    $scope.loadProducts();
+
+angular.module('market').controller('indexController',function ($rootScope,$scope ,$http,$location,$localStorage) {
+   $scope.tryToAuth = function () {
+       $http.post('http://localhost:5555/auth/authenticate', $scope.user)
+           .then(function successCallback(response) {
+               if (response.data.token) {
+                   $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                   $localStorage.wnteredShopUser = {username: $scope.user.username, token: response.data.token};
+
+                   $scope.user.username = null;
+                   $scope.user.password = null;
+
+                   $location.path('/');
+               }
+           }, function errorCallback(response) {
+           });
+   };
+
+   $scope.tryToLogout = function () {
+       $scope.clearUser();
+       $scope.user=null;
+       $location.path('/');
+   };
+
+   $scope.clearUser = function () {
+       delete $localStorage.wnteredShopUser;
+       $http.defaults.headers.common.Authorization = '';
+   };
+
+   $scope.isUserLoggedIn = function () {
+       if ($localStorage.wnteredShopUser) {
+           return true;
+       } else {
+           return false;
+       }
+   };
 
 });

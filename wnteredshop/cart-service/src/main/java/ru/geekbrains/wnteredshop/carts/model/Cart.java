@@ -57,7 +57,10 @@ public class Cart {
     private void recalculate(){
         totalPrice =new BigDecimal(0);
         for(CartItem item: items){
-           item.setPrice(item.getPrice().add(item.getPricePerProduct().multiply(new BigDecimal(item.getQuantity()))));
+            item.setPrice(BigDecimal.valueOf(0));
+            for (int i = 0; i <item.getQuantity() ; i++) {
+                item.setPrice(item.getPrice().add(item.getPricePerProduct()));
+            }
             totalPrice=totalPrice.add(item.getPrice());
         }
     }
