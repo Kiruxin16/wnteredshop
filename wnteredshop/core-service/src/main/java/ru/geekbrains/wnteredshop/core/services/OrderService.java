@@ -23,7 +23,7 @@ public class OrderService {
 
     @Transactional
     public Order createOrder(String username) {
-        CartDto cart = cartService.getCurrentCart();
+        CartDto cart = cartService.getCurrentCart(username);
         Order order = new Order();
         order.setUsername(username);
         order.setTotalPrice(cart.getTotalPrice());
@@ -37,7 +37,7 @@ public class OrderService {
                 ).collect(Collectors.toList())
         );
         orderRepository.save(order);
-        cartService.clear();
+        cartService.clear(username);
         return order;
 
     }

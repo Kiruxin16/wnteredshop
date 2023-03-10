@@ -37,7 +37,7 @@ public class Cart {
 
     public void clearCartItems(){
         items.clear();
-        recalculate();
+        totalPrice= BigDecimal.ZERO;
     }
 
     public void deleteItem(Long id){
@@ -55,9 +55,9 @@ public class Cart {
     }
 
     private void recalculate(){
-        totalPrice =new BigDecimal(0);
+        totalPrice = BigDecimal.ZERO ;
         for(CartItem item: items){
-            item.setPrice(BigDecimal.valueOf(0));
+            item.setPrice(BigDecimal.ZERO);
             for (int i = 0; i <item.getQuantity() ; i++) {
                 item.setPrice(item.getPrice().add(item.getPricePerProduct()));
             }

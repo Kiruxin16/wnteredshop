@@ -1,54 +1,70 @@
 package ru.geekbrains.wnteredshop.carts.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.wnteredshop.api.CartDto;
+import ru.geekbrains.wnteredshop.api.StringResponse;
 import ru.geekbrains.wnteredshop.carts.converters.CartConverter;
-import ru.geekbrains.wnteredshop.carts.model.Cart;
-import ru.geekbrains.wnteredshop.carts.services.CartServise;
+import ru.geekbrains.wnteredshop.carts.services.CartService;
 
-import java.net.http.HttpHeaders;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartController {
-    private final CartServise cartServise;
+    private final CartService cartServise;
     private final CartConverter cartConverter;
 
-    @PostMapping("add/{id}")
-    public void addToCart(@PathVariable Long id, @RequestHeader(name = "username",defaultValue = "") String username){
-       cartServise.add(username,id);
+    @GetMapping("/generate_uuid")
+    public StringResponse generateUuid(){
+        return new StringResponse(UUID.randomUUID().toString());
+    }
+
+
+    @PostMapping("/{uuid}/add/{id}")
+    public void addToCart(@PathVariable Long id, @RequestHeader(name = "username",required = false) String username,@PathVariable("uuid") String uuid){
+        String targetUuid = getCartUuid(username,uuid);
+       cartServise.add(targetUuid,id);
 
     }
 
-    @GetMapping
-    public CartDto getCurrentCart(@RequestHeader(name = "username",defaultValue = "")String username){
-        return cartConverter.entityToDto(cartServise.getCurrentCart(username));
+    @GetMapping("/{uuid}")
+    public CartDto getCurrentCart(@RequestHeader(name = "username",required = false)String username,@PathVariable("uuid") String uuid){
+        String targetUuid = getCartUuid(username,uuid);
+        return cartConverter.entityToDto(cartServise.getCurrentCart(targetUuid));
     }
 
-    @DeleteMapping
-    public void clearCart(@RequestHeader(name = "username",defaultValue = "")String username){
-        cartServise.clearCart(username);
+    @DeleteMapping("/{uuid}")
+    public void clearCart(@RequestHeader(name = "username",required = false)String username,@PathVariable("uuid") String uuid){
+        String targetUuid = getCartUuid(username,uuid);
+        cartServise.clearCart(targetUuid);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteItem(@PathVariable Long id,@RequestHeader(name = "username",defaultValue = "")String username){
-        cartServise.deleteItem(username,id);
+    @DeleteMapping("/{uuid}/{id}")
+    public void deleteItem(@PathVariable Long id,@RequestHeader(name = "username",required = false)String username,@PathVariable("uuid") String uuid){
+        String targetUuid = getCartUuid(username,uuid);
+        cartServise.deleteItem(targetUuid,id);
     }
 
-    @PostMapping("change")
+    @PostMapping("/{uuid}/change")
     public void changeQuantity(
-            @RequestHeader(name = "username",defaultValue = "")String username,
+            @RequestHeader(name = "username",required = false)String username,
             @RequestParam("id") Long id,
-            @RequestParam("delta") int delta
+            @RequestParam("delta") int delta,
+            @PathVariable("uuid") String uuid
             ){
-        cartServise.changeQuantity(username,id,delta);
+        String targetUuid = getCartUuid(username,uuid);
+        cartServise.changeQuantity(targetUuid,id,delta);
+    }
+
+    private String getCartUuid(String username, String uuid){
+        if(username!=null){
+            return username;
+        }
+        return uuid;
     }
 
 }
+
+//@PathVariable("uuid") String uuid

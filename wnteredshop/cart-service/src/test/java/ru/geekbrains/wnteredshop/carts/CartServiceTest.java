@@ -8,14 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.geekbrains.wnteredshop.api.ProductDto;
 import ru.geekbrains.wnteredshop.carts.integrations.ProductServiceIntegration;
-import ru.geekbrains.wnteredshop.carts.services.CartServise;
+import ru.geekbrains.wnteredshop.carts.services.CartService;
 
 import java.math.BigDecimal;
 
 @SpringBootTest
 public class CartServiceTest {
     @Autowired
-    CartServise cartServise;
+    CartService cartServise;
 
     @MockBean
     private ProductServiceIntegration productServiceIntegration;
