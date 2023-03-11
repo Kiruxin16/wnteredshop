@@ -26,11 +26,11 @@ public class CartServiceTest {
         ProductDto productDto =new ProductDto(1l,"Coffee",BigDecimal.valueOf(400),"Other");
         Mockito.doReturn(productDto).when(productServiceIntegration).getProductById(1l);
         for (int i = 0; i < 4; i++) {
-            cartServise.add(null,1l);
+            cartServise.add(null,null,1l);
         }
 
         cartServise.changeQuantity(null,1l,-4);
-        Assertions.assertEquals(cartServise.getCurrentCart(null).getItems().size(),0);
+        Assertions.assertEquals(cartServise.getCurrentCart(null,null).getItems().size(),0);
 
     }
 

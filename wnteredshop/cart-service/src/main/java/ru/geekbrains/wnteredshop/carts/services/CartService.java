@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.wnteredshop.api.ProductDto;
 import ru.geekbrains.wnteredshop.carts.integrations.ProductServiceIntegration;
 import ru.geekbrains.wnteredshop.carts.model.Cart;
+import ru.geekbrains.wnteredshop.carts.model.CartItem;
 
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 import java.util.function.Consumer;
 
 @Service
@@ -25,26 +27,11 @@ public class CartService {
     private final RedisTemplate<String,Object> redisTemplate;
 
 
-    private HashMap<String,Cart> cartPool;
-
-    @PostConstruct
-    public void init(){
-        cartPool =new HashMap<>();
-    }
-/*
-    public  Cart getCurrentCart(String uuid){
-
-        String targetUuid=cartPrefix+uuid;
-        if (!cartPool.containsKey(uuid)) {
-            cartPool.put(uuid, new Cart());
-        }
-        return cartPool.get(uuid);
-    }*/
     private String getCartKeyFromUuid(String uuid){
         return cartPrefix+uuid;
     }
 
-    public Cart getCurrentCart(String uuid){
+    public Cart getCurrentCart(String username,String uuid){
         String cartKey= getCartKeyFromUuid(uuid);
         if (!redisTemplate.hasKey(cartKey)){
             redisTemplate.opsForValue().set(cartKey,new Cart());
@@ -52,9 +39,9 @@ public class CartService {
         return (Cart) redisTemplate.opsForValue().get(cartKey);
     }
 
-    public void add(String uuid,Long productId){
+    public void add(String username,String uuid,Long productId){
         ProductDto product = productServiceIntegration.getProductById(productId);
-        execute(uuid,cart -> cart.add(product));
+        execute(username,uuid,cart -> cart.add(product));
 
     }
     public void clearCart(String uuid){
@@ -69,11 +56,29 @@ public class CartService {
         execute(uuid,cart->cart.changeQuantity(id,delta));
     }
 
-    private void execute(String uuid,Consumer<Cart> operation){
-        Cart cart = getCurrentCart(uuid);
+    private void execute(String username,String uuid,Consumer<Cart> operation){
+        Cart cart = getCurrentCart(username,uuid);
         operation.accept(cart);
         redisTemplate.opsForValue().set(getCartKeyFromUuid(uuid),cart);
 
+    }
+
+    private String mergeCards(String username,String uuid){
+        if(username!=null){
+            Cart guestCart = (Cart) redisTemplate.opsForValue().get(getCartKeyFromUuid(uuid));
+            Cart userCart =(Cart) redisTemplate.opsForValue().get(getCartKeyFromUuid(username));
+
+
+
+        }
+    }
+
+    private void mergeCartitemsWithList(Cart cart, CartItem cartItem){
+        if(cart.getItems().stream().anyMatch(ca ->ca.getProductId().equals(cartItem.getProductId()))){
+            cart.changeQuantity(cartItem.getProductId(),cartItem.getQuantity());
+        }else{
+            cart.getItems().add(cartItem);
+        }
     }
 
 
