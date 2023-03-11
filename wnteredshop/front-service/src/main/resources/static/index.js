@@ -18,6 +18,14 @@
                 templateUrl: 'cart/cart.html',
                 controller: 'cartController'
             })
+            .when('/orders', {
+                templateUrl: 'orders/orders.html',
+                controller: 'ordersController'
+            })
+            .when('/registration', {
+                templateUrl: 'registration/registration.html',
+                controller: 'registrationController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -70,7 +78,7 @@ angular.module('market').controller('indexController',function ($rootScope,$scop
            });
    };
 
-   $scope.tryToLogout = function () {
+   $rootScope.tryToLogout = function () {
        $scope.clearUser();
        $scope.user=null;
        $location.path('/');
@@ -81,7 +89,7 @@ angular.module('market').controller('indexController',function ($rootScope,$scop
        $http.defaults.headers.common.Authorization = '';
    };
 
-   $scope.isUserLoggedIn = function () {
+   $rootScope.isUserLoggedIn = function () {
        if ($localStorage.wnteredShopUser) {
            return true;
        } else {

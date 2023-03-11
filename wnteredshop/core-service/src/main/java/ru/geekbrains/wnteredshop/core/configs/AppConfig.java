@@ -30,8 +30,8 @@ public class AppConfig {
                 .create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,cartServiceIntergrationProperties.getConnectionTimeout())
                 .doOnConnected(connection -> {
-                    connection.addHandlerLast(new ReadTimeoutHandler(cartServiceIntergrationProperties.getReadTimeout(), TimeUnit.MICROSECONDS));
-                    connection.addHandlerLast(new WriteTimeoutHandler(cartServiceIntergrationProperties.getWriteTimeout(), TimeUnit.MICROSECONDS));
+                    connection.addHandlerLast(new ReadTimeoutHandler(cartServiceIntergrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(cartServiceIntergrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
                 });
         return WebClient
                 .builder()
