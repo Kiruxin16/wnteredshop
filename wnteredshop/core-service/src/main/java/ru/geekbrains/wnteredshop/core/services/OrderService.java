@@ -1,16 +1,20 @@
 package ru.geekbrains.wnteredshop.core.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.geekbrains.wnteredshop.api.AppError;
 import ru.geekbrains.wnteredshop.api.CartDto;
+import ru.geekbrains.wnteredshop.api.OrderDto;
+import ru.geekbrains.wnteredshop.api.ResourceNotFoundException;
 import ru.geekbrains.wnteredshop.core.entities.Order;
 import ru.geekbrains.wnteredshop.core.entities.OrderItem;
 import ru.geekbrains.wnteredshop.core.integratoins.CartServiceIntegration;
 import ru.geekbrains.wnteredshop.core.repositories.OrderRepository;
 
 
-
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,4 +45,10 @@ public class OrderService {
         return order;
 
     }
+
+    public List<Order> getUserOrders(String username) {
+        return orderRepository.findAllByUsername(username);
+    }
+
+
 }

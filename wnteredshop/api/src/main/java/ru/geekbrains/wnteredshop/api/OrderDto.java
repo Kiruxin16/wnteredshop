@@ -8,7 +8,7 @@ public class OrderDto {
 
     private Long id;
 
-    private String user_id;
+    private String username;
 
     public Long getId() {
         return id;
@@ -18,12 +18,12 @@ public class OrderDto {
         this.id = id;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public List<OrderItemDto> getItems() {

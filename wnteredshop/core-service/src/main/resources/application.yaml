@@ -22,8 +22,8 @@ spring:
 
 
 integration:
-  product-service:
-    url: http://localhost:8190/winter-carts
+  cart-service:
+    url: http://localhost:8190/winter-cart
     read-timeout: 10000
     write-timeout: 5000
-    connect-timeout: 5000
+    connect-timeout: 500

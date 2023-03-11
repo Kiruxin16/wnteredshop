@@ -6,9 +6,9 @@ server:
 integration:
   product-service:
     url: http://localhost:8189/winter-core/api/v1/products
-    read-timeout: 10000
+    read-timeout: 50000
     write-timeout: 5000
-    connect-timeout: 5000
+    connect-timeout: 500
 
 cart-service:
   cart-prefix: winter_cart_

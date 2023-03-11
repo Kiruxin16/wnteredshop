@@ -42,7 +42,8 @@ angular.module('market').controller('cartController', function ($scope, $http, $
         $scope.createOrder = function () {
             $http.post(coreContextPath+'api/v1/orders')
                 .then(function (response) {
-                    $scope.loadCart();
+                    alert("Заказ оформлен")
+                    $scope.loadProductsInCart();
                 });
         }
 

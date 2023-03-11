@@ -35,8 +35,8 @@ public class AppConfig {
                 .create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,productServiceIntergrationProperties.getConnectionTimeout())
                 .doOnConnected(connection -> {
-                    connection.addHandlerLast(new ReadTimeoutHandler(productServiceIntergrationProperties.getReadTimeout(), TimeUnit.MICROSECONDS));
-                    connection.addHandlerLast(new WriteTimeoutHandler(productServiceIntergrationProperties.getWriteTimeout(), TimeUnit.MICROSECONDS));
+                    connection.addHandlerLast(new ReadTimeoutHandler(productServiceIntergrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(productServiceIntergrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
                 });
         return WebClient
                 .builder()
