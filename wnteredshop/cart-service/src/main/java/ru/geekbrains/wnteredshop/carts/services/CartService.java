@@ -66,7 +66,7 @@ public class CartService {
     private void execute(String username,String uuid,Consumer<Cart> operation){
         Cart cart = getCurrentCart(username,uuid);
         operation.accept(cart);
-        redisTemplate.opsForValue().set(getCartKeyFromUuid(uuid),cart);
+        redisTemplate.opsForValue().set(getCartKeyFromUuid(username==null? uuid:username),cart);
 
     }
 
