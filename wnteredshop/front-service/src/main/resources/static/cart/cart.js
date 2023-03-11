@@ -4,7 +4,7 @@ angular.module('market').controller('cartController', function ($scope, $http, $
     const coreContextPath ='http://localhost:5555/core/';
 
     $scope.loadProductsInCart = function(){
-        $http.get(contextPath+'api/v1/cart').then(function (response){
+        $http.get(contextPath+'api/v1/cart/'+$localStorage.wnteredShopGuestCartId).then(function (response){
             $scope.cart = response.data;
         });
     }
@@ -12,13 +12,13 @@ angular.module('market').controller('cartController', function ($scope, $http, $
 
 
     $scope.clearCart = function(){
-        $http.delete(contextPath+'api/v1/cart').then(function (response){
+        $http.delete(contextPath+'api/v1/cart/'+$localStorage.wnteredShopGuestCartId).then(function (response){
             $scope.loadProductsInCart();
             });
         }
 
     $scope.deleteItem = function(id){
-        $http.delete(contextPath+'api/v1/cart/'+id).then(function (response){
+        $http.delete(contextPath+'api/v1/cart/'+$localStorage.wnteredShopGuestCartId+'/'+id).then(function (response){
             $scope.loadProductsInCart();
         });
     }
@@ -26,7 +26,7 @@ angular.module('market').controller('cartController', function ($scope, $http, $
     $scope.changeQuantity = function(id,delta){
 
         $http({
-            url:contextPath+'api/v1/cart/change',
+            url:contextPath+'api/v1/cart/'+$localStorage.wnteredShopGuestCartId+'/change',
             method: 'POST',
             params:{
                 id:id,

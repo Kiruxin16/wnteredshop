@@ -41,6 +41,12 @@
                 $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.wnteredShopUser.token;
             }
         }
+        if(!$localStorage.wnteredShopGuestCartId){
+            $http.get('http://localhost:5555/cart/api/v1/cart/generate_uuid')
+                .then(function successCallback(response){
+                    $localStorage.wnteredShopGuestCartId = response.data.value;
+                });
+        }
 
     }
 })();

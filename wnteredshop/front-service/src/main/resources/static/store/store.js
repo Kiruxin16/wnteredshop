@@ -34,13 +34,13 @@ angular.module('market').controller('storeController', function ($scope, $http, 
     }
 
     $scope.loadProductsInCart = function(){
-        $http.get(cartContextPath+'api/v1/cart').then(function (response){
+        $http.get(cartContextPath+'api/v1/cart/'+$localStorage.wnteredShopGuestCartId).then(function (response){
             $scope.cart = response.data;
         });
     }
 
     $scope.addProductToCart = function(productId){
-        $http.post(cartContextPath+'api/v1/cart/add/'+productId).then(function (response){
+        $http.post(cartContextPath+'api/v1/cart/'+$localStorage.wnteredShopGuestCartId+'/add/'+productId).then(function (response){
         $scope.loadProductsInCart();
         });
     }
