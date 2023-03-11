@@ -29,7 +29,7 @@ public class CartServiceTest {
             cartServise.add(null,null,1l);
         }
 
-        cartServise.changeQuantity(null,1l,-4);
+        cartServise.changeQuantity(null,null,1l,-4);
         Assertions.assertEquals(cartServise.getCurrentCart(null,null).getItems().size(),0);
 
     }

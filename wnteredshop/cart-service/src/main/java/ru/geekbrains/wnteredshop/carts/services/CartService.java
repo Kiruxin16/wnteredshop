@@ -11,9 +11,6 @@ import ru.geekbrains.wnteredshop.carts.model.Cart;
 import ru.geekbrains.wnteredshop.carts.model.CartItem;
 
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.List;
 import java.util.function.Consumer;
 
 @Service
@@ -32,11 +29,21 @@ public class CartService {
     }
 
     public Cart getCurrentCart(String username,String uuid){
-        String cartKey= getCartKeyFromUuid(uuid);
-        if (!redisTemplate.hasKey(cartKey)){
-            redisTemplate.opsForValue().set(cartKey,new Cart());
+        String guestCartKey= getCartKeyFromUuid(uuid);
+        if (!redisTemplate.hasKey(guestCartKey)){
+            redisTemplate.opsForValue().set(guestCartKey,new Cart());
         }
-        return (Cart) redisTemplate.opsForValue().get(cartKey);
+        if(username!=null){
+            String userCartKey =getCartKeyFromUuid(username);
+            if(!redisTemplate.hasKey(userCartKey)){
+                redisTemplate.opsForValue().set(userCartKey,new Cart());
+            }
+            mergeCards(guestCartKey,userCartKey);
+            return (Cart) redisTemplate.opsForValue().get(userCartKey);
+
+        }
+
+        return (Cart) redisTemplate.opsForValue().get(guestCartKey);
     }
 
     public void add(String username,String uuid,Long productId){
@@ -44,16 +51,16 @@ public class CartService {
         execute(username,uuid,cart -> cart.add(product));
 
     }
-    public void clearCart(String uuid){
-        execute(uuid,cart -> cart.clearCartItems());
+    public void clearCart(String username, String uuid){
+        execute(username,uuid,cart -> cart.clearCartItems());
     }
 
-    public void deleteItem(String uuid,Long id){
-        execute(uuid,cart -> cart.deleteItem(id));
+    public void deleteItem(String username,String uuid,Long id){
+        execute(username,uuid,cart -> cart.deleteItem(id));
     }
 
-    public void changeQuantity(String uuid,Long id, int delta){
-        execute(uuid,cart->cart.changeQuantity(id,delta));
+    public void changeQuantity(String username, String uuid,Long id, int delta){
+        execute(username,uuid,cart->cart.changeQuantity(id,delta));
     }
 
     private void execute(String username,String uuid,Consumer<Cart> operation){
@@ -63,23 +70,18 @@ public class CartService {
 
     }
 
-    private String mergeCards(String username,String uuid){
-
-        String guestCartKey =getCartKeyFromUuid(uuid);
-        if(username!=null){
-            String userCartKey =getCartKeyFromUuid(username);
+    private void mergeCards(String guestCartKey,String userCartKey){
             Cart guestCart = (Cart) redisTemplate.opsForValue().get(guestCartKey);
-            Cart userCart =(Cart) redisTemplate.opsForValue().get(userCartKey));
-            guestCart.getItems().forEach(cartItem ->mergeCartitemsWithList(userCart,cartItem));
-            guestCart.clearCartItems();
-            redisTemplate.opsForValue().set(userCartKey,userCart);
-            redisTemplate.opsForValue().set(guestCartKey,guestCart);
-            return username;
-        }
-        return uuid;
+            Cart userCart =(Cart) redisTemplate.opsForValue().get(userCartKey);
+            if(!guestCart.getItems().isEmpty()) {
+                guestCart.getItems().forEach(cartItem -> mergeCartItemsWithList(userCart, cartItem));
+                guestCart.clearCartItems();
+                redisTemplate.opsForValue().set(userCartKey, userCart);
+                redisTemplate.opsForValue().set(guestCartKey, guestCart);
+            }
     }
 
-    private void mergeCartitemsWithList(Cart cart, CartItem cartItem){
+    private void mergeCartItemsWithList(Cart cart, CartItem cartItem){
         if(cart.getItems().stream().anyMatch(ca ->ca.getProductId().equals(cartItem.getProductId()))){
             cart.changeQuantity(cartItem.getProductId(),cartItem.getQuantity());
         }else{
