@@ -64,13 +64,19 @@ public class CartService {
     }
 
     private String mergeCards(String username,String uuid){
+
+        String guestCartKey =getCartKeyFromUuid(uuid);
         if(username!=null){
-            Cart guestCart = (Cart) redisTemplate.opsForValue().get(getCartKeyFromUuid(uuid));
-            Cart userCart =(Cart) redisTemplate.opsForValue().get(getCartKeyFromUuid(username));
-
-
-
+            String userCartKey =getCartKeyFromUuid(username);
+            Cart guestCart = (Cart) redisTemplate.opsForValue().get(guestCartKey);
+            Cart userCart =(Cart) redisTemplate.opsForValue().get(userCartKey));
+            guestCart.getItems().forEach(cartItem ->mergeCartitemsWithList(userCart,cartItem));
+            guestCart.clearCartItems();
+            redisTemplate.opsForValue().set(userCartKey,userCart);
+            redisTemplate.opsForValue().set(guestCartKey,guestCart);
+            return username;
         }
+        return uuid;
     }
 
     private void mergeCartitemsWithList(Cart cart, CartItem cartItem){
