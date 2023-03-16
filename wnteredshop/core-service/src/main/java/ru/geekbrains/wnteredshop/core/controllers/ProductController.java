@@ -1,9 +1,17 @@
 package ru.geekbrains.wnteredshop.core.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.wnteredshop.api.AppError;
 import ru.geekbrains.wnteredshop.api.ProductDto;
 import ru.geekbrains.wnteredshop.api.ResourceNotFoundException;
 import ru.geekbrains.wnteredshop.core.converters.ProductConverter;
@@ -18,12 +26,21 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
-//@CrossOrigin("*")
+@Tag(name = "Продукты",description = "Методы работы с продусктами")
 public class ProductController {
 
     private final ProductService productService;
     private final ProductConverter productConverter;
 
+    @Operation(
+            summary = "Запрос на получение страницы продуктов",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = Page.class))
+                    )
+            }
+    )
     @GetMapping
     public Page<ProductDto> findAllProducts(@RequestParam(name = "p",defaultValue = "1")Integer page,
                                             @RequestParam(name = "min_cost",required = false)BigDecimal minCost,
@@ -33,32 +50,61 @@ public class ProductController {
         if(page<1){
             page=1;
         }
-
         return productService.find(page,minCost,maxCost,partTitle);
     }
 
-/*    @GetMapping("/{id}")
-    public  ResponseEntity<?> findProductByID(@PathVariable Long id){
-        Optional<Product> product =productService.findProductByID(id);
-        if (!product.isPresent()){
-            return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),"Продукт не найден, id"+id),HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(product.get(),HttpStatus.OK);
-    }*/
 
+    @Operation(
+            summary = "Запрос на получение продукта по id",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = ProductDto.class))
+                    ),
+                    @ApiResponse(
+                            description = "Продукт не найден", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
     @GetMapping("/{id}")
-    public  ProductDto findProductByID(@PathVariable Long id){
+    public  ProductDto findProductByID(@PathVariable @Parameter(description = "Идентификатор продукта", required = true) Long id){
         Product product = productService.findProductByID(id).orElseThrow(() -> new ResourceNotFoundException("Продукт не найден, id"+id));
         return productConverter.entityToDto(product);
     }
 
+
+
+    @Operation(
+            summary = "Запрос на создание нового продукта",
+            responses = {
+                    @ApiResponse(
+                            description = "Продукт успешно создан", responseCode = "201",
+                            content = @Content(schema = @Schema(implementation = ProductDto.class))
+                    )
+
+            }
+    )
     @PostMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public ProductDto createProduct(@RequestBody ProductDto productDto){
         Product product = productService.createNewProduct(productDto);
         return  productDto;
     }
 
 
+    @Operation(
+            summary = "Запрос на удаление сущесвующего продукта",
+            responses = {
+                    @ApiResponse(
+                            description = "Продукт удален", responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Продукт не найден", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
     public void deleteProductByID(@PathVariable Long id){
         productService.deleteProductByID(id);

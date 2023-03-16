@@ -1,21 +1,31 @@
 package ru.geekbrains.wnteredshop.api;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 
+@Schema(description = "Модель продукта из списка заказа")
 public class OrderItemDto {
 
+    @Schema(description = "ID продукта ", required = true, example = "1")
     private Long id;
 
 
+    @Schema(description = "Название продукта ", required = true, example = "Bread")
     private String productTitle;
 
+    @Schema(description = "Имя заказа", required = true)
     private String orderTitle;
 
+    @Schema(description = "Количество одинаковых продуктов", required = true, example = "3")
     private int quantity;
 
+    @Schema(description = "Цена за продукт", required = true, example = "40.00")
     private BigDecimal pricePerProduct;
 
+    @Schema(description = "Стоимость товаров одного наименования", required = true, example = "120.00")
+    private BigDecimal price;
     public Long getId() {
         return id;
     }
@@ -64,5 +74,5 @@ public class OrderItemDto {
         this.price = price;
     }
 
-    private BigDecimal price;
+
 }
