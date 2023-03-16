@@ -39,7 +39,6 @@ public class ProductController {
                             description = "Успешный ответ", responseCode = "200",
                             content = @Content(schema = @Schema(implementation = Page.class))
                     )
-
             }
     )
     @GetMapping
@@ -51,7 +50,6 @@ public class ProductController {
         if(page<1){
             page=1;
         }
-
         return productService.find(page,minCost,maxCost,partTitle);
     }
 
@@ -75,6 +73,8 @@ public class ProductController {
         return productConverter.entityToDto(product);
     }
 
+
+
     @Operation(
             summary = "Запрос на создание нового продукта",
             responses = {
@@ -93,6 +93,18 @@ public class ProductController {
     }
 
 
+    @Operation(
+            summary = "Запрос на удаление сущесвующего продукта",
+            responses = {
+                    @ApiResponse(
+                            description = "Продукт удален", responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Продукт не найден", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
     public void deleteProductByID(@PathVariable Long id){
         productService.deleteProductByID(id);
