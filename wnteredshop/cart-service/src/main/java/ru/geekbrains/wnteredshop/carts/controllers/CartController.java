@@ -24,27 +24,23 @@ public class CartController {
 
     @PostMapping("/{uuid}/add/{id}")
     public void addToCart(@PathVariable Long id, @RequestHeader(name = "username",required = false) String username,@PathVariable("uuid") String uuid){
-        String targetUuid = getCartUuid(username,uuid);
-       cartServise.add(targetUuid,id);
+       cartServise.add(username,uuid,id);
 
     }
 
     @GetMapping("/{uuid}")
     public CartDto getCurrentCart(@RequestHeader(name = "username",required = false)String username,@PathVariable("uuid") String uuid){
-        String targetUuid = getCartUuid(username,uuid);
-        return cartConverter.entityToDto(cartServise.getCurrentCart(targetUuid));
+        return cartConverter.entityToDto(cartServise.getCurrentCart(username,uuid));
     }
 
     @DeleteMapping("/{uuid}")
     public void clearCart(@RequestHeader(name = "username",required = false)String username,@PathVariable("uuid") String uuid){
-        String targetUuid = getCartUuid(username,uuid);
-        cartServise.clearCart(targetUuid);
+        cartServise.clearCart(username,uuid);
     }
 
     @DeleteMapping("/{uuid}/{id}")
     public void deleteItem(@PathVariable Long id,@RequestHeader(name = "username",required = false)String username,@PathVariable("uuid") String uuid){
-        String targetUuid = getCartUuid(username,uuid);
-        cartServise.deleteItem(targetUuid,id);
+        cartServise.deleteItem(username,uuid,id);
     }
 
     @PostMapping("/{uuid}/change")
@@ -54,17 +50,11 @@ public class CartController {
             @RequestParam("delta") int delta,
             @PathVariable("uuid") String uuid
             ){
-        String targetUuid = getCartUuid(username,uuid);
-        cartServise.changeQuantity(targetUuid,id,delta);
+        cartServise.changeQuantity(username,uuid,id,delta);
     }
 
-    private String getCartUuid(String username, String uuid){
-        if(username!=null){
-            return username;
-        }
-        return uuid;
-    }
+
 
 }
 
-//@PathVariable("uuid") String uuid
+
