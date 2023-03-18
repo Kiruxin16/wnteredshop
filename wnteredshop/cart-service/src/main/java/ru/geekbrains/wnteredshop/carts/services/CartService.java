@@ -47,8 +47,13 @@ public class CartService {
     }
 
     public void add(String username,String uuid,Long productId){
-        ProductDto product = productServiceIntegration.getProductById(productId);
-        execute(username,uuid,cart -> cart.add(product));
+        Cart cart = getCurrentCart(username,uuid);
+        if(cart.getItems().stream().anyMatch(cartItem -> cartItem.getProductId().equals(productId))){
+            this.changeQuantity(username,uuid,productId,1);
+        }else {
+            ProductDto product = productServiceIntegration.getProductById(productId);
+            execute(username, uuid, newCart -> newCart.add(product));
+        }
 
     }
     public void clearCart(String username, String uuid){
