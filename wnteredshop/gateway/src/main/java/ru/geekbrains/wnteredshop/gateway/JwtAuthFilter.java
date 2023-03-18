@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
     @Autowired
@@ -36,9 +39,7 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
                     return this.onError(exchange, "Authorization header is invalid", HttpStatus.UNAUTHORIZED);
                 }
                 populateRequestWithHeaders(exchange, token);
-            }/*else {
-                exchange.getRequest().mutate().header("username","").build();
-            }*/
+            }
             return chain.filter(exchange);
         };
     }
@@ -68,9 +69,10 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
 
     private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
         Claims claims = jwtUtil.getAllClaimsFromToken(token);
+        String userRoles = ((List<String>)claims.get("roles")).stream().collect(Collectors.joining(" "));
         exchange.getRequest().mutate()
                 .header("username", claims.getSubject())
-//                .header("role", String.valueOf(claims.get("role")))
+                .header("roles", userRoles)
                 .build();
     }
 }

@@ -47,6 +47,7 @@
 
             if ($localStorage.wnteredShopUser) {
                 $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.wnteredShopUser.token;
+
             }
         }
         if(!$localStorage.wnteredShopGuestCartId){
