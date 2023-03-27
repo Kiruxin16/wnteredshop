@@ -29,7 +29,16 @@ public class Cart {
                 return;
             }
         }
-        items.add(new CartItem(product.getId(), product.getTitle(),1,product.getPrice(),product.getPrice()));
+
+
+        items.add(CartItem.newBuilder()
+                        .withProductId(product.getId())
+                        .withProductTitle(product.getTitle())
+                        .withPrice(product.getPrice())
+                        .withPricePerProduct(product.getPrice())
+                        .withQuantity(1)
+                        .build());
+
         recalculate();
     }
 

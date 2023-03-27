@@ -97,5 +97,12 @@ angular.module('market').controller('indexController',function ($rootScope,$scop
            return false;
        }
    };
+   $rootScope.adminInfo = function () {
+     $http.get('http://localhost:5555/core/admin')
+                     .then(function (response){
+                         console.log(response)
+                     });
+   };
+
 
 });
