@@ -39,18 +39,18 @@ angular.module('market').controller('cartController', function ($scope, $http, $
     }
 
 
-        $scope.createOrder = function () {
-            $http.post(coreContextPath+'api/v1/orders')
-                .then(function (response) {
-                    alert("Заказ оформлен")
-                    $scope.loadProductsInCart();
-                });
-        }
+    $scope.createOrder = function () {
+        $http.post(coreContextPath+'api/v1/orders')
+            .then(function (response) {
+                alert("Заказ оформлен")
+                $scope.loadProductsInCart();
+            });
+    }
 
-        $scope.guestCreateOrder = function () {
-            alert('Для оформления заказа необходимо войти в учетную запись');
-        }
+    $scope.guestCreateOrder = function () {
+        alert('Для оформления заказа необходимо войти в учетную запись');
+    }
 
-        $scope.loadProductsInCart();
+    $scope.loadProductsInCart();
 
 });

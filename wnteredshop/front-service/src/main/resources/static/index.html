@@ -53,6 +53,9 @@
                     <li class="nav-item" ng-show="!isUserLoggedIn()" style="padding: 4px;">
                         <a class="nav-link" href="#!/registration">Регистрация</a>
                     </li>
+                    <li class="nav-item" ng-show="isUserLoggedIn()" style="padding: 4px;">
+                        <button class="btn btn-outline-secondary btn-sm" ng-click="adminInfo()">Админ</button>
+                    </li>
 
                 </ul>
             </div>
