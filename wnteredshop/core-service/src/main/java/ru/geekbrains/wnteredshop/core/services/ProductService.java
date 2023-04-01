@@ -9,6 +9,7 @@ import ru.geekbrains.wnteredshop.api.ProductDto;
 import ru.geekbrains.wnteredshop.core.annotations.Time;
 import ru.geekbrains.wnteredshop.core.converters.ProductConverter;
 import ru.geekbrains.wnteredshop.core.entities.Product;
+import ru.geekbrains.wnteredshop.core.repositories.ProductCachedRepository;
 import ru.geekbrains.wnteredshop.core.repositories.ProductRepository;
 import ru.geekbrains.wnteredshop.core.repositories.specifications.ProductSpecification;
 
@@ -22,6 +23,8 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+
+    private final ProductCachedRepository productCachedRepository;
     private final ProductConverter productConverter;
     //@Time
     public List<Product> findAllProducts(){
@@ -44,7 +47,7 @@ public class ProductService {
     }
 
     public Optional<Product> findProductByID(Long id){
-        return productRepository.findById(id);
+        return productCachedRepository.findById(id);
     }
 
 
