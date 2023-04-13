@@ -9,6 +9,8 @@ import ru.geekbrains.wnteredshop.api.ProductDto;
 import ru.geekbrains.wnteredshop.core.annotations.Time;
 import ru.geekbrains.wnteredshop.core.converters.ProductConverter;
 import ru.geekbrains.wnteredshop.core.entities.Product;
+import ru.geekbrains.wnteredshop.core.listener.Event;
+import ru.geekbrains.wnteredshop.core.listener.EventPool;
 import ru.geekbrains.wnteredshop.core.repositories.ProductCachedRepository;
 import ru.geekbrains.wnteredshop.core.repositories.ProductRepository;
 import ru.geekbrains.wnteredshop.core.repositories.specifications.ProductSpecification;
@@ -23,6 +25,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+    private final EventPool eventPool;
 
     private final ProductCachedRepository productCachedRepository;
     private final ProductConverter productConverter;
@@ -60,6 +63,7 @@ public class ProductService {
 
         Product product =productConverter.dtoToEntity(productDto);
         productRepository.save(product );
+        eventPool.publishEvent(new Event(productDto));
         return  product;
 
     }
