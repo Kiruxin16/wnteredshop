@@ -15,6 +15,7 @@ import ru.geekbrains.wnteredshop.core.repositories.OrderRepository;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +25,10 @@ public class OrderService {
     private final CartServiceIntegration cartService;
     private final OrderRepository orderRepository;
 
+    private final Map<Long,Boolean> identityOrderItemMap;
+
+
+
 
     @Transactional
     public Order createOrder(String username) {
@@ -32,13 +37,16 @@ public class OrderService {
         order.setUsername(username);
         order.setTotalPrice(cart.getTotalPrice());
         order.setItems(cart.getItems().stream().map(
-                cartItemDto -> new OrderItem(
-                        productService.findProductByID(cartItemDto.getProductId()).get(),
-                        order,
-                        cartItemDto.getQuantity(),
-                        cartItemDto.getPricePerProduct(),
-                        cartItemDto.getPrice())
-                ).collect(Collectors.toList())
+                cartItemDto -> {
+
+                    OrderItem oa= new OrderItem(
+                            productService.findProductByID(cartItemDto.getProductId()).get(),
+                            order,
+                            cartItemDto.getQuantity(),
+                            cartItemDto.getPricePerProduct(),
+                            cartItemDto.getPrice());
+
+                }).collect(Collectors.toList())
         );
         orderRepository.save(order);
         cartService.clear(username);
