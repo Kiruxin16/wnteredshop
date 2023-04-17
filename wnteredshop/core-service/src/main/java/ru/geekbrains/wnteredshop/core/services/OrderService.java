@@ -14,6 +14,7 @@ import ru.geekbrains.wnteredshop.core.integratoins.CartServiceIntegration;
 import ru.geekbrains.wnteredshop.core.repositories.OrderRepository;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,7 +26,8 @@ public class OrderService {
     private final CartServiceIntegration cartService;
     private final OrderRepository orderRepository;
 
-    private final Map<Long,Boolean> identityOrderItemMap;
+    private final HashMap<Long,OrderItem> identityOrderItemMap;
+
 
 
 
@@ -33,18 +35,25 @@ public class OrderService {
     @Transactional
     public Order createOrder(String username) {
         CartDto cart = cartService.getCurrentCart(username);
+
         Order order = new Order();
         order.setUsername(username);
         order.setTotalPrice(cart.getTotalPrice());
         order.setItems(cart.getItems().stream().map(
                 cartItemDto -> {
-
-                    OrderItem oa= new OrderItem(
-                            productService.findProductByID(cartItemDto.getProductId()).get(),
-                            order,
-                            cartItemDto.getQuantity(),
-                            cartItemDto.getPricePerProduct(),
-                            cartItemDto.getPrice());
+                    OrderItem oa;
+                    if(!identityOrderItemMap.containsKey(cartItemDto.getProductId())) {
+                        oa = new OrderItem(
+                                productService.findProductByID(cartItemDto.getProductId()).get(),
+                                order,
+                                cartItemDto.getQuantity(),
+                                cartItemDto.getPricePerProduct(),
+                                cartItemDto.getPrice());
+                        identityOrderItemMap.put(cartItemDto.getProductId(),oa);
+                    }else{
+                        oa=identityOrderItemMap.get(cartItemDto.getProductId());
+                    }
+                    return oa;
 
                 }).collect(Collectors.toList())
         );
